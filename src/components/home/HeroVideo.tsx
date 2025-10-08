@@ -31,7 +31,7 @@ export default function HeroVideo() {
         </h1>
 
         <p className="mt-6 text-lg text-neutral-300 max-w-2xl mx-auto">
-          Desde Corrientes al mundo. impulsamos el talento local con visión profesional.
+          Desde Corrientes al mundo. Impulsamos el talento local con visión profesional.
           Pádel, entrenamiento y crecimiento en un mismo lugar.
         </p>
 
