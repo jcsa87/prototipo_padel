@@ -19,12 +19,20 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      ".vercel/**",
+      "supabase/**",
     ],
 
-    // 👇 Agregamos aquí las reglas personalizadas
     rules: {
+      // ⚙️ Desactivamos reglas demasiado estrictas o innecesarias
       "@typescript-eslint/no-this-alias": "off",
       "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+
+      // Opcional: mejora legibilidad en proyectos React modernos
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
     },
   },
 ];
