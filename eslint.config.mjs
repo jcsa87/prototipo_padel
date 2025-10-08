@@ -11,6 +11,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
   {
     ignores: [
       "node_modules/**",
@@ -19,6 +20,12 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+
+    // 👇 Agregamos aquí las reglas personalizadas
+    rules: {
+      "@typescript-eslint/no-this-alias": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+    },
   },
 ];
 
