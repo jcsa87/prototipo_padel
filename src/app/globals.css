@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* react-slick carousel */
+.slick-slider {
+  overflow: hidden;
+}
+
+.slick-dots li button:before {
+  color: #3b82f6; /* azul de Versori */
+}
