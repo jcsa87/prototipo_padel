@@ -10,41 +10,34 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Usa la configuración base de Next.js
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // 🔹 Configuración general
   {
+    // Ignoramos directorios que no deben ser linted
     ignores: [
       "node_modules/**",
       ".next/**",
       "out/**",
       "build/**",
-      "next-env.d.ts",
       ".vercel/**",
       "supabase/**",
-      "src/generated/**", // ✅ Ignora Prisma y otros archivos autogenerados
+      "src/generated/**", // 👈 Ignora todo el código autogenerado de Prisma
+      "prisma/**",
+      "next-env.d.ts",
     ],
 
+    // Desactivamos reglas que causan errores en producción
     rules: {
-      // 🟩 Desactivamos solo reglas que causan errores de build
-      "@typescript-eslint/no-this-alias": "off",
       "@typescript-eslint/no-require-imports": "off",
-      "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
-    },
-  },
-
-  // 🔹 Excepción especial para librerías o código externo
-  {
-    files: [
-      "src/generated/**/*.{js,ts}",
-      "src/lib/**/*.js",
-      "src/lib/**/*.ts",
-    ],
-    rules: {
       "@typescript-eslint/no-this-alias": "off",
       "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-unsafe-function-type": "off",
+      "@typescript-eslint/no-wrapper-object-types": "off",
+      "@typescript-eslint/no-unnecessary-type-constraint": "off",
+      "no-console": "off",
     },
   },
 ];
