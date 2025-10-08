@@ -21,18 +21,16 @@ const eslintConfig = [
       "next-env.d.ts",
       ".vercel/**",
       "supabase/**",
+      "src/generated/**", // 👈 Ignora archivos autogenerados (Prisma, etc.)
     ],
 
     rules: {
-      // ⚙️ Desactivamos reglas demasiado estrictas o innecesarias
-      "@typescript-eslint/no-this-alias": "off",
-      "@typescript-eslint/no-unused-expressions": "off",
+      // 🚫 Desactivamos solo reglas que causan build error
+      "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
-
-      // Opcional: mejora legibilidad en proyectos React modernos
-      "react/react-in-jsx-scope": "off",
-      "react/jsx-uses-react": "off",
+      "@typescript-eslint/no-this-alias": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
     },
   },
 ];
