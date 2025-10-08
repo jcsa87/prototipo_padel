@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Container from "../ui/Container";
 import { Button } from "../ui/Button";
-import { supabase } from "@/lib/supabaseClient";
 
 export default function Navbar() {
   const [hidden, setHidden] = useState(false);
