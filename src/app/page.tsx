@@ -1,13 +1,9 @@
 // src/app/page.tsx
 import HeroVideo from "../components/home/HeroVideo";
-
 import MarcasSlider from "../components/home/MarcasSlider";
-import Container from "../components/ui/Container";
-import SectionTitle from "../components/ui/SectionTitle";
-import { Button } from "../components/ui/Button";
 import TextSlider from "@/components/home/TextSlider";
 import SobreNosotros from "@/components/home/SobreNosotros";
-import CorrientesVideo from "@/components/home/CorrientesVideo";
+import Ubicacion from "@/components/home/Ubicacion";
 
 export default function HomePage() {
   return (
@@ -16,16 +12,14 @@ export default function HomePage() {
       <HeroVideo />
 
       {/* Texto deslizante con el nombre de la marca */}
-     <TextSlider text="Versori Pádel" speed={115} />
+      <TextSlider text="Versori Pádel" speed={115} />
 
-     <SobreNosotros />
-
+      <SobreNosotros />
 
       {/* Slider de marcas */}
       <MarcasSlider />
 
-      <CorrientesVideo />
-
+      <Ubicacion />
     </main>
   );
 }

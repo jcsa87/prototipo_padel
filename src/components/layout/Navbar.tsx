@@ -1,4 +1,3 @@
-// src/components/layout/Navbar.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -30,14 +29,13 @@ export default function Navbar() {
       }`}
     >
       <Container className="flex items-center justify-between py-4">
+        {/* Logo */}
         <Link href="/" className="text-xl font-bold text-white tracking-wide">
           VERSORI<span className="text-blue-500">.</span>
         </Link>
 
+        {/* Navegación */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-300">
-          <Link href="#sedes" className="hover:text-white">
-            Sedes
-          </Link>
           <Link href="#clases" className="hover:text-white">
             Clases
           </Link>
@@ -47,9 +45,13 @@ export default function Navbar() {
           <Link href="#nosotros" className="hover:text-white">
             Nosotros
           </Link>
-          <Button variant="primary" size="sm">
+
+          <Link
+            href="/reserva"
+            className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition"
+          >
             Hacé tu reserva
-          </Button>
+          </Link>
         </nav>
       </Container>
     </header>

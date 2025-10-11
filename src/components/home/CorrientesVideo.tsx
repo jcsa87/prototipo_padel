@@ -16,8 +16,11 @@ export default function CorrientesVideo() {
         playsInline
       />
 
-      {/* 🌓 Capa de opacidad */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* 💙 Capa de degradado azul visible */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#001629]/80 via-[#002b5b]/60 to-transparent z-0" />
+
+      {/* 🌓 Capa de opacidad para contraste */}
+      <div className="absolute inset-0 bg-black/30 z-0" />
 
       {/* 📍 Contenido */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
@@ -36,9 +39,9 @@ export default function CorrientesVideo() {
           transition={{ duration: 1 }}
           className="max-w-2xl text-neutral-200 text-lg md:text-xl leading-relaxed"
         >
-          Desde la calidez de Corrientes, nació nuestra visión: crear un espacio donde
-          la tecnología y el deporte se unan para potenciar el talento local y compartir
-          la pasión por el pádel con todo el país.
+          Desde la calidez de Corrientes, nació nuestra visión: crear un espacio
+          donde la tecnología y el deporte se unan para potenciar el talento
+          local y compartir la pasión por el pádel con todo el país.
         </motion.p>
 
         <motion.div

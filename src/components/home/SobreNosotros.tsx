@@ -31,19 +31,19 @@ export default function SobreNosotros() {
   return (
     <section
       id="nosotros"
-      className="relative w-full py-20 bg-neutral-950 text-white border-t border-neutral-800"
+      className="relative w-full min-h-[75vh] flex items-center bg-transparent text-white border-t border-neutral-800"
     >
       <Container className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* 🖼️ Carrusel de imágenes */}
         <motion.div
-          className="rounded-2xl overflow-hidden shadow-lg"
+          className="rounded-5xl overflow-hidden shadow-xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <Slider {...settings}>
             {images.map((src, index) => (
-              <div key={index} className="relative h-[420px] w-full">
+              <div key={index} className="relative h-[480px] w-full">
                 <Image
                   src={src}
                   alt={`Historia ${index + 1}`}
@@ -64,15 +64,14 @@ export default function SobreNosotros() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-300">
-            Sobre Nosotros
-          </h2>
+          <h2 className="text-4xl font-bold text-blue-300">Sobre Nosotros</h2>
 
           <p className="text-neutral-400 leading-relaxed">
-            {" "}<span className="text-white font-semibold">Versori Pádel </span>
-            surge con la misión de modernizar la forma en que vivimos el deporte.
-            Combinamos gestión inteligente, pasión por el pádel y tecnología aplicada al 
-            rendimiento para crear una experiencia completa para clubes, entrenadores y jugadores.
+            <span className="text-white font-semibold">Versori Pádel </span>
+            surge con la misión de modernizar la forma en que vivimos el
+            deporte. Combinamos gestión inteligente, pasión por el pádel y
+            tecnología aplicada al rendimiento para crear una experiencia
+            completa para clubes, entrenadores y jugadores.
           </p>
 
           <Button variant="white" size="lg">
