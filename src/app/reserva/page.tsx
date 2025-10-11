@@ -41,10 +41,10 @@ export default function Reserva() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        Hacé tu reserva
+        SELECCIONA TU CANCHA
       </motion.h1>
       {/* Grid de canchas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-Acols-3 gap-8 w-full max-w-6xl">
         {canchas.map((cancha, i) => (
           <CanchaCard
             key={i}
