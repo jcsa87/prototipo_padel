@@ -7,14 +7,16 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* 🔹 Texto / Derechos */}
         <p className="text-sm text-center md:text-left">
-          © {new Date().getFullYear()} <span className="text-white font-semibold">VERSORI.</span>. Todos los derechos reservados.
+          © {new Date().getFullYear()}{" "}
+          <span className="text-white font-semibold">VERSORI.</span>. Todos los
+          derechos reservados.
         </p>
 
         {/* 🔹 Enlaces sociales */}
         <div className="flex items-center gap-6 text-white text-2xl">
           {/* WhatsApp */}
           <Link
-            href="https://wa.me/5493794123456"
+            href="https://wa.me/5493704770647"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"

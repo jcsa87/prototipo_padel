@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Container from "../ui/Container";
-import { Button } from "../ui/Button";
 
 export default function Navbar() {
   const [hidden, setHidden] = useState(false);
@@ -36,13 +35,11 @@ export default function Navbar() {
 
         {/* Navegación */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-300">
-          <Link href="#clases" className="hover:text-white">
-            Clases
+          <Link href="/profesores" className="hover:text-white transition">
+            Profesores
           </Link>
-          <Link href="#eventos" className="hover:text-white">
-            Eventos
-          </Link>
-          <Link href="#nosotros" className="hover:text-white">
+
+          <Link href="/nosotros" className="hover:text-white transition">
             Nosotros
           </Link>
 
@@ -51,6 +48,14 @@ export default function Navbar() {
             className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition"
           >
             Hacé tu reserva
+          </Link>
+
+          {/* Botón de Login */}
+          <Link
+            href="/login"
+            className="text-sm font-semibold text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 px-4 py-2 rounded-md transition"
+          >
+            Iniciar sesión
           </Link>
         </nav>
       </Container>

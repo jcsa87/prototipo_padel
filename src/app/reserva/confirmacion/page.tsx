@@ -1,10 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CheckCircle2, Calendar, Clock, MapPin, ArrowLeft } from "lucide-react";
+import { Calendar, Clock, MapPin, ArrowLeft, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 
-export default function ConfirmacionTurno() {
+function ConfirmacionTurno() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -19,6 +21,7 @@ export default function ConfirmacionTurno() {
   // Lógica local
   const horas = bloques * 0.5; // cada bloque = 30 min
   const precioHora = 10000;
+  const reserva = total / 2; // 50% del total
 
   // Fecha actual formateada
   const fechaActual = new Date().toLocaleDateString("es-AR", {
@@ -36,14 +39,20 @@ export default function ConfirmacionTurno() {
         transition={{ duration: 0.8 }}
         className="bg-[#0b2545] border border-[#1b4e89] rounded-3xl p-10 w-full max-w-xl shadow-2xl text-center"
       >
-        {/* ✅ Encabezado */}
+        {/* 🔹 Encabezado con logo */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-6 flex flex-col items-center gap-2"
+          className="mb-6 flex flex-col items-center gap-3"
         >
-          <CheckCircle2 className="w-12 h-12 text-emerald-400" />
+          <Image
+            src="/sponsors/versori/VERSORI_TRANSPARENTE.PNG"
+            alt="Versori Logo"
+            width={150}
+            height={150}
+            className="opacity-90"
+          />
           <h1 className="text-3xl font-bold text-white">
             Confirmación de turno
           </h1>
@@ -91,7 +100,19 @@ export default function ConfirmacionTurno() {
               Total: ${total.toLocaleString("es-AR")}
             </p>
           </div>
+
+          <div className="flex justify-between items-center mt-2">
+            <p className="text-neutral-300">Pago por reserva (50%):</p>
+            <p className="text-lg font-semibold text-yellow-400">
+              ${reserva.toLocaleString("es-AR")}
+            </p>
+          </div>
         </div>
+
+        <p className="text-gray-400 text-xs mt-4 italic">
+          *Se cobrará el 50% del valor total para confirmar la reserva de la
+          cancha. El resto se abona en el complejo.
+        </p>
 
         {/* ⚙️ Botones */}
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
@@ -103,7 +124,13 @@ export default function ConfirmacionTurno() {
           </button>
 
           <button
-            onClick={() => alert("✅ Turno confirmado correctamente")}
+            onClick={() =>
+              alert(
+                `✅ Pago parcial de $${reserva.toLocaleString(
+                  "es-AR"
+                )} confirmado`
+              )
+            }
             className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 transition-all px-6 py-3 rounded-xl text-white font-semibold"
           >
             Confirmar Reserva <CheckCircle2 className="w-5 h-5" />
@@ -111,5 +138,15 @@ export default function ConfirmacionTurno() {
         </div>
       </motion.div>
     </section>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense
+      fallback={<p className="text-white text-center mt-20">Cargando...</p>}
+    >
+      <ConfirmacionTurno />
+    </Suspense>
   );
 }

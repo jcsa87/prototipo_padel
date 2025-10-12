@@ -1,6 +1,7 @@
 "use client";
 
 import Slider from "react-slick";
+import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Container from "../ui/Container";
@@ -73,10 +74,11 @@ export default function SobreNosotros() {
             tecnología aplicada al rendimiento para crear una experiencia
             completa para clubes, entrenadores y jugadores.
           </p>
-
-          <Button variant="white" size="lg">
-            Seguir leyendo
-          </Button>
+          <Link href="/nosotros">
+            <Button variant="white" size="lg">
+              Seguir leyendo
+            </Button>
+          </Link>
         </motion.div>
       </Container>
     </section>
