@@ -4,7 +4,7 @@ import Image from "next/image";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Calendar, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Calendar, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
 
 const PRICE_PER_HOUR = 10000;
 
@@ -59,13 +59,11 @@ export default function CanchaPage({
   const [anchor, setAnchor] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
 
-  // convertir "08:30" → minutos
   const toMinutes = (t: string) => {
     const [h, m] = t.split(":").map(Number);
     return h * 60 + m;
   };
 
-  // generar bloques de media hora
   useEffect(() => {
     const now = new Date();
     const slots: string[] = [];
@@ -99,30 +97,27 @@ export default function CanchaPage({
     );
   }
 
-  // click en bloque horario
+  // Selección por rango
   const handleSelect = (hour: string) => {
     setWarning(null);
 
-    // si no hay ancla → iniciar rango
     if (!anchor) {
       setAnchor(hour);
       setSelected([hour]);
       return;
     }
 
-    // si clickeás el mismo bloque → limpiar
     if (anchor === hour) {
       setAnchor(null);
       setSelected([]);
       return;
     }
 
-    // calcular rango
     const start = Math.min(toMinutes(anchor), toMinutes(hour));
     const end = Math.max(toMinutes(anchor), toMinutes(hour));
-    const rangeMinutes = end - start;
+    const rangeMinutes = end - start; // diferencia real
 
-    // máximo 3 h = 180 min
+    // Máximo 3h (180 min)
     if (rangeMinutes > 180) {
       setWarning("No se pueden reservar más de 3 horas consecutivas.");
       setAnchor(null);
@@ -133,14 +128,30 @@ export default function CanchaPage({
     const day = availableDays.find((d) => d.label === openDay);
     const range = (day?.hours || []).filter((h) => {
       const m = toMinutes(h);
-      return m >= start && m <= end; // 🔹 cambiamos "< end" por "<= end"
+      // incluimos el bloque final (ej: 09:00) para mostrarlo como “fin”
+      return m >= start && m <= end;
     });
 
     setSelected(range);
     setAnchor(null);
   };
 
-  const total = selected.length * 0.5 * PRICE_PER_HOUR; // cada bloque = 30 min
+  const hasValidSelection = selected.length >= 2;
+  const startTime = hasValidSelection ? selected[0] : null;
+  const endTime = hasValidSelection ? selected[selected.length - 1] : null;
+
+  // Duración real por diferencia de tiempos (NO por cantidad de celdas)
+  const durationMinutes = hasValidSelection
+    ? toMinutes(endTime!) - toMinutes(startTime!)
+    : 0;
+  const total = (durationMinutes / 60) * PRICE_PER_HOUR;
+
+  const fechaHoy = new Date().toLocaleDateString("es-AR", {
+    weekday: "short",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-[#001a33] to-[#002b5b] flex flex-col items-center text-white px-6 py-20 relative">
@@ -149,10 +160,10 @@ export default function CanchaPage({
         onClick={() => router.back()}
         className="absolute top-24 left-8 bg-transparent border border-blue-400 text-blue-300 font-semibold px-4 py-2 rounded-xl hover:bg-blue-700/20 hover:text-white transition-all duration-200"
       >
-        ← Volver
+        ←
       </button>
 
-      {/* Imagen cancha */}
+      {/* Imagen */}
       <div className="relative w-full max-w-5xl h-80 rounded-3xl overflow-hidden shadow-xl border border-[#1b4e89]">
         <Image
           src={cancha.imagen}
@@ -179,6 +190,11 @@ export default function CanchaPage({
           >
             <Calendar className="w-6 h-6 text-blue-300" />
             {openDay}
+            {openDay === "Hoy" && (
+              <span className="text-neutral-400 text-sm ml-2">
+                ({fechaHoy})
+              </span>
+            )}
             <motion.span
               animate={{ rotate: showDays ? 180 : 0 }}
               transition={{ duration: 0.2 }}
@@ -197,7 +213,6 @@ export default function CanchaPage({
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="overflow-hidden mb-6"
           >
@@ -237,13 +252,24 @@ export default function CanchaPage({
                       key={hour}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleSelect(hour)}
-                      className={`cursor-pointer py-3 rounded-xl text-center font-semibold transition-all duration-200 border ${
-                        isSelected
-                          ? "bg-blue-600 border-blue-400 text-white"
-                          : "bg-emerald-600/20 hover:bg-emerald-600/35 border-emerald-500/30 text-emerald-100"
-                      }`}
+                      className={`cursor-pointer py-3 rounded-xl text-center font-semibold transition-all duration-200 border relative overflow-hidden
+                        ${
+                          isSelected
+                            ? "bg-blue-600 border-blue-400 text-white animate-pulse-glow"
+                            : "bg-emerald-600/20 hover:bg-emerald-600/35 border-emerald-500/30 text-emerald-100"
+                        }`}
                     >
-                      {hour}
+                      {isSelected && (
+                        <motion.span
+                          className="absolute inset-0 rounded-xl bg-blue-400/30 blur-md"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: [0, 0.8, 0] }}
+                          transition={{ duration: 1.2, ease: "easeInOut" }}
+                        />
+                      )}
+                      <span className="relative z-10 flex items-center justify-center gap-1">
+                        <Clock className="w-4 h-4" /> {hour}
+                      </span>
                     </motion.div>
                   );
                 })}
@@ -280,23 +306,51 @@ export default function CanchaPage({
                 </span>{" "}
                 ${PRICE_PER_HOUR.toLocaleString("es-AR")}
               </p>
-              <p className="text-neutral-400 text-sm">
-                Total estimado:{" "}
-                <span className="text-blue-300 font-semibold">
-                  ${total.toLocaleString("es-AR")}
-                </span>
-              </p>
+
+              {hasValidSelection ? (
+                <>
+                  <p className="text-neutral-400 text-sm">
+                    Total estimado:{" "}
+                    <span className="text-blue-300 font-semibold">
+                      ${total.toLocaleString("es-AR")}
+                    </span>{" "}
+                    <span className="text-neutral-500 text-xs ml-1">
+                      ({durationMinutes} min)
+                    </span>
+                  </p>
+                  <p className="text-neutral-400 text-xs mt-1">
+                    Desde{" "}
+                    <span className="text-white font-semibold">
+                      {startTime}
+                    </span>{" "}
+                    hasta{" "}
+                    <span className="text-white font-semibold">{endTime}</span>
+                  </p>
+                </>
+              ) : (
+                <p className="text-neutral-500 text-sm italic mt-1">
+                  Seleccioná una hora de inicio y una de fin
+                </p>
+              )}
             </div>
 
             <button
-              disabled={selected.length === 0}
-              onClick={() =>
+              disabled={!hasValidSelection}
+              onClick={() => {
+                if (!hasValidSelection) return;
+                const bloques = Math.round(durationMinutes / 30); // bloques de 30 min
                 router.push(
-                  `/reserva/confirmacion?bloques=${selected.length}&total=${total}`
-                )
-              }
+                  `/reserva/confirmacion?bloques=${bloques}&total=${total}&cancha=${encodeURIComponent(
+                    cancha!.nombre
+                  )}&dia=${encodeURIComponent(
+                    openDay
+                  )}&inicio=${encodeURIComponent(
+                    startTime!
+                  )}&fin=${encodeURIComponent(endTime!)}`
+                );
+              }}
               className={`flex items-center gap-2 font-semibold px-6 py-3 rounded-xl shadow-md transition-all ${
-                selected.length
+                hasValidSelection
                   ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                   : "bg-gray-600 cursor-not-allowed text-gray-300"
               }`}

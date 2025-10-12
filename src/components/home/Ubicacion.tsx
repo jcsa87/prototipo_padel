@@ -37,7 +37,7 @@ export default function Ubicacion() {
         className="w-full h-[70vh]"
       >
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4066.2468420154623!2d-58.854310616305625!3d-27.47320619926287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sar!4v1760167193506!5m2!1sen!2sar"
+          src="https://www.google.com/maps?q=-27.4712,-58.8347&z=17&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0 }}
