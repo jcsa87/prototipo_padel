@@ -2,8 +2,8 @@
 
 import { useEffect, useState, FC } from "react";
 import Link from "next/link";
-import Container from "../ui/Container"; // Asumiendo que esta ruta es correcta
-import { supabase } from "../../lib/supabase/supabaseClient"; // Ajusta esta ruta si es necesario
+import Container from "../ui/Container";
+import { supabase } from "../../lib/supabase/supabaseClient";
 import type { Session } from "@supabase/supabase-js";
 
 // Definimos un tipo para el perfil del usuario para mayor seguridad con TypeScript
@@ -36,30 +36,34 @@ const Navbar: FC = () => {
   // --- Efecto para gestionar la sesión y obtener el perfil ---
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
 
       if (session) {
         // Si hay sesión, buscamos el perfil del usuario
         const { data: profile } = await supabase
-          .from('profiles')
-          .select('nombre, apellido')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("nombre, apellido")
+          .eq("id", session.user.id)
           .single();
         setUserProfile(profile);
       }
     };
-    
+
     fetchSessionAndProfile();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       if (session) {
         // Si el estado de la sesión cambia (ej. login), buscamos el perfil
         const { data: profile } = await supabase
-          .from('profiles')
-          .select('nombre, apellido')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("nombre, apellido")
+          .eq("id", session.user.id)
           .single();
         setUserProfile(profile);
       } else {
@@ -73,7 +77,9 @@ const Navbar: FC = () => {
 
   // --- Función para cerrar sesión con confirmación ---
   const handleLogout = async () => {
-    const isConfirmed = window.confirm("¿Estás seguro de que querés cerrar sesión?");
+    const isConfirmed = window.confirm(
+      "¿Estás seguro de que querés cerrar sesión?"
+    );
     if (isConfirmed) {
       await supabase.auth.signOut();
       // El listener onAuthStateChange se encargará de actualizar los estados session y userProfile a null
@@ -121,7 +127,7 @@ const Navbar: FC = () => {
             <>
               {/* --- SALUDO CON NOMBRE Y APELLIDO --- */}
               <span className="text-neutral-400">
-                {userProfile ? `Hola, ${userProfile.nombre}` : 'Cargando...'}
+                {userProfile ? `Hola, ${userProfile.nombre}` : "Cargando..."}
               </span>
               <button
                 onClick={handleLogout}
