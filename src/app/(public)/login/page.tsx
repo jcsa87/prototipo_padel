@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, FormEvent, FC } from 'react';
+import { useState, FormEvent, FC } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
-import { supabase } from '../../lib/supabase/supabaseClient'; // Asegúrate que la ruta sea correcta
+import { useRouter } from "next/navigation";
+import { supabase } from "../../../lib/supabase/supabaseClient"; // Asegúrate que la ruta sea correcta
 
 const LoginPage: FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -25,16 +25,16 @@ const LoginPage: FC = () => {
     if (error) {
       alert(`Error al iniciar sesión: ${error.message}`);
     } else {
-      router.push('/');
+      router.push("/");
     }
-    
+
     setIsLoading(false);
   };
 
   // --- FUNCIÓN PARA EL LOGIN CON GOOGLE ---
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
         // La URL de redirección después del login exitoso
         redirectTo: `${location.origin}/auth/callback`,
@@ -42,8 +42,8 @@ const LoginPage: FC = () => {
     });
 
     if (error) {
-        console.error("Error al iniciar sesión con Google:", error.message);
-        alert("Hubo un problema al intentar iniciar sesión con Google.");
+      console.error("Error al iniciar sesión con Google:", error.message);
+      alert("Hubo un problema al intentar iniciar sesión con Google.");
     }
   };
 
@@ -70,15 +70,37 @@ const LoginPage: FC = () => {
         <form onSubmit={handleLogin} className="flex flex-col gap-4 text-left">
           {/* ... tus inputs de email y contraseña no cambian ... */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Correo electrónico</label>
-            <input type="email" placeholder="ejemplo@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full p-3 rounded-xl bg-[#112d57] border border-blue-900/40 focus:outline-none focus:ring-2 focus:ring-blue-600"/>
+            <label className="block text-sm text-gray-300 mb-1">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              placeholder="ejemplo@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full p-3 rounded-xl bg-[#112d57] border border-blue-900/40 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
           </div>
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Contraseña</label>
-            <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full p-3 rounded-xl bg-[#112d57] border border-blue-900/40 focus:outline-none focus:ring-2 focus:ring-blue-600"/>
+            <label className="block text-sm text-gray-300 mb-1">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full p-3 rounded-xl bg-[#112d57] border border-blue-900/40 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
           </div>
-          <button type="submit" disabled={isLoading} className="mt-4 bg-blue-600 hover:bg-blue-700 transition-all py-3 rounded-xl font-semibold disabled:bg-blue-800">
-            {isLoading ? 'Iniciando...' : 'Iniciar sesión'}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="mt-4 bg-blue-600 hover:bg-blue-700 transition-all py-3 rounded-xl font-semibold disabled:bg-blue-800"
+          >
+            {isLoading ? "Iniciando..." : "Iniciar sesión"}
           </button>
         </form>
 
@@ -91,11 +113,12 @@ const LoginPage: FC = () => {
 
         <div className="mt-8">
           <div className="flex items-center gap-2 justify-center text-gray-400 text-sm mb-4">
-            <span className="w-10 h-px bg-gray-600"></span>o<span className="w-10 h-px bg-gray-600"></span>
+            <span className="w-10 h-px bg-gray-600"></span>o
+            <span className="w-10 h-px bg-gray-600"></span>
           </div>
-          
+
           {/* --- BOTÓN DE GOOGLE CONECTADO A LA FUNCIÓN --- */}
-          <button 
+          <button
             onClick={handleGoogleLogin}
             className="flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-semibold px-6 py-3 rounded-xl shadow-md w-full transition-all"
           >

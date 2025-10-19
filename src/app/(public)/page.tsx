@@ -1,6 +1,6 @@
 // src/app/page.tsx
-import HeroVideo from "../components/home/HeroVideo";
-import MarcasSlider from "../components/home/MarcasSlider";
+import HeroVideo from "../../components/home/HeroVideo";
+import MarcasSlider from "../../components/home/MarcasSlider";
 import TextSlider from "@/components/home/TextSlider";
 import SobreNosotros from "@/components/home/SobreNosotros";
 import Ubicacion from "@/components/home/Ubicacion";
