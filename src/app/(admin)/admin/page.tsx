@@ -1,33 +1,45 @@
-// src/app/admin/page.tsx
 "use client";
-import { StatCard } from "./components/StatCard";
-import { ChartSection } from "./components/ChartSection";
-import { TableReservas } from "./components/TableReservas";
-import { ClubCustomization } from "./components/ClubCustomization";
 
-export default function AdminPage() {
+import { useState } from "react";
+import { StatCard } from "./components/StatCard";
+import { ChartReservas } from "./components/ChartReservas";
+import { ChartCanchaPopular } from "././components/ChartCanchaPopular";
+import { TransactionsTable } from "././components/TransactionsTable";
+import { ROLE_PERMISSIONS, Rol } from "@/lib/roles";
+
+export default function DashboardPage() {
+  // Simulación de usuario con rol (reemplazar luego por session real)
+  const [userRole] = useState<Rol>("Administrador"); // Cambiar a "Cajero" para probar
+  const permisos = ROLE_PERMISSIONS[userRole];
+
   const stats = [
-    { title: "Reservas activas", value: 24 },
-    { title: "Pagos procesados", value: "$1250" },
-    { title: "Usuarios registrados", value: 45 },
+    { title: "Reservas esta semana", value: 42 },
+    { title: "Clientes registrados", value: 123 },
+    { title: "Cancha más reservada", value: "Cancha 2" },
   ];
 
   return (
     <div className="space-y-6">
+      {/* Estadísticas principales */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {stats.map((s) => (
           <StatCard key={s.title} title={s.title} value={s.value} />
         ))}
       </div>
 
+      {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <ChartSection />
-          <TableReservas />
+          <ChartReservas />
+          {userRole === "Administrador" && <ChartCanchaPopular />}
         </div>
-        <div className="lg:col-span-1">
-          <ClubCustomization />
-        </div>
+
+        {/* Solo el administrador puede ver transacciones */}
+        {userRole === "Administrador" && (
+          <div>
+            <TransactionsTable />
+          </div>
+        )}
       </div>
     </div>
   );

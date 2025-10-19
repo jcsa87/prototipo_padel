@@ -2,49 +2,62 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Calendar,
   Users,
   CreditCard,
   Settings,
+  ChevronDown,
+  ChevronRight,
   LogOut,
 } from "lucide-react";
-import { useState } from "react";
+import { ROLE_PERMISSIONS, Rol } from "@/lib/roles";
 
 export function Sidebar() {
+  const [userRole] = useState<Rol>("Administrador");
+  const permisos = ROLE_PERMISSIONS[userRole];
+  const [isPersonalizacionOpen, setIsPersonalizacionOpen] = useState(false);
+
   const user = {
     nombreCompleto: "Juan Cruz",
     rol: "Administrador",
-    fotoPerfil: "https://thispersondoesnotexist.com",
+    fotoPerfil: "https://thispersondoesnotexist.com/",
   };
 
-  const [userRole] = useState(user.rol);
-
   const links = [
-    { href: "/admin", label: "Dashboard", icon: <LayoutDashboard size={18} /> },
     {
+      key: "dashboard",
+      href: "/admin",
+      label: "Dashboard",
+      icon: <LayoutDashboard size={18} />,
+    },
+    {
+      key: "reservas",
       href: "/admin/reservas",
       label: "Reservas",
       icon: <Calendar size={18} />,
     },
-    { href: "/admin/usuarios", label: "Usuarios", icon: <Users size={18} /> },
-    { href: "/admin/pagos", label: "Pagos", icon: <CreditCard size={18} /> },
+    {
+      key: "usuarios",
+      href: "/admin/usuarios",
+      label: "Usuarios",
+      icon: <Users size={18} />,
+    },
+    {
+      key: "pagos",
+      href: "/admin/pagos",
+      label: "Pagos",
+      icon: <CreditCard size={18} />,
+    },
   ];
 
-  if (userRole === "Administrador") {
-    links.push({
-      href: "/admin/personalizacion",
-      label: "Personalización",
-      icon: <Settings size={18} />,
-    });
-  }
-
-  const handleLogout = () => alert("Sesión cerrada (aquí irá tu lógica real)");
+  const handleLogout = () => alert("Sesión cerrada");
 
   return (
-    <aside className="w-64 bg-[#0d1b2a] text-white flex flex-col justify-between">
-      {/* Encabezado con info del usuario */}
+    <aside className="w-64 bg-[#0d1b2a] text-white flex flex-col justify-between shadow-lg">
+      {/* Usuario */}
       <div className="flex flex-col items-center p-5 border-b border-gray-700">
         <Link href="/admin/usuario" className="group">
           <div className="relative w-16 h-16 mx-auto transition-transform group-hover:scale-105">
@@ -72,9 +85,44 @@ export function Sidebar() {
             {link.label}
           </Link>
         ))}
+
+        {/* Menú desplegable */}
+        {userRole === "Administrador" && (
+          <div>
+            <button
+              onClick={() => setIsPersonalizacionOpen(!isPersonalizacionOpen)}
+              className="flex w-full items-center gap-3 px-3 py-2 hover:bg-[#1b263b] rounded-md transition"
+            >
+              <Settings size={18} />
+              <span>Personalización</span>
+              {isPersonalizacionOpen ? (
+                <ChevronDown size={16} className="ml-auto" />
+              ) : (
+                <ChevronRight size={16} className="ml-auto" />
+              )}
+            </button>
+
+            {isPersonalizacionOpen && (
+              <div className="ml-8 mt-2 space-y-1">
+                <Link
+                  href="/admin/personalizacion/club"
+                  className="block px-2 py-1 text-sm text-gray-300 hover:text-white hover:bg-[#1b263b] rounded-md transition"
+                >
+                  Club
+                </Link>
+                <Link
+                  href="/admin/personalizacion/canchas"
+                  className="block px-2 py-1 text-sm text-gray-300 hover:text-white hover:bg-[#1b263b] rounded-md transition"
+                >
+                  Canchas
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
-      {/* Cierre de sesión */}
+      {/* Logout */}
       <button
         onClick={handleLogout}
         className="flex items-center justify-center gap-2 py-3 border-t border-gray-700 text-sm hover:bg-[#1b263b] transition"

@@ -1,4 +1,14 @@
-export const ROLE_PERMISSIONS = {
+// Definimos los roles posibles
+export type Rol = "Administrador" | "Cajero";
+
+export const ROLE_PERMISSIONS: Record<
+  Rol,
+  {
+    acceso: string[];
+    puedeEditarEstilos: boolean;
+    puedeVerFacturacion: boolean;
+  }
+> = {
   Administrador: {
     acceso: ["dashboard", "reservas", "usuarios", "pagos", "personalizacion"],
     puedeEditarEstilos: true,
@@ -9,4 +19,4 @@ export const ROLE_PERMISSIONS = {
     puedeEditarEstilos: false,
     puedeVerFacturacion: false,
   },
-} as const;
+};
