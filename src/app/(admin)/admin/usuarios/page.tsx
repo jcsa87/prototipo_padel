@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Usuario = {
   id: number;
@@ -12,11 +13,11 @@ type Usuario = {
   rol: "Cliente" | "Cajero" | "Administrador";
   activo: boolean;
   fotoPerfil: string;
-  fechaCreacion: string; // nuevo campo
+  fechaCreacion: string;
 };
 
 export default function UsuariosPage() {
-  const [userRole] = useState("Cajero"); // cambiar a "Administrador" para probar todos los roles
+  const [userRole] = useState("Cajero"); // cambiar a "Administrador" para ver todos los usuarios
 
   const usuarios: Usuario[] = [
     {
@@ -54,7 +55,7 @@ export default function UsuariosPage() {
     },
   ];
 
-  // Si el usuario es cajero, solo ve los clientes
+  // Si el usuario es cajero, solo ve clientes
   const usuariosVisibles =
     userRole === "Administrador"
       ? usuarios
@@ -110,7 +111,12 @@ export default function UsuariosPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-medium">{`${u.nombre} ${u.apellido}`}</p>
+                  <Link
+                    href={`/admin/usuarios/${u.id}`}
+                    className="font-medium text-[#0d1b2a] hover:underline"
+                  >
+                    {`${u.nombre} ${u.apellido}`}
+                  </Link>
                   <p className="text-xs text-gray-500">#{u.id}</p>
                 </div>
               </td>
